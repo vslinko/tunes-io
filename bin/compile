@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+$pharPath = __DIR__ . '/../tunes-io.phar';
+
+if (is_readable($pharPath)) {
+    unlink($pharPath);
+}
+
+$stub = <<<STUB
+#!/usr/bin/env php
+<?php
+
+Phar::mapPhar("tunes-io.phar");
+include "phar://tunes-io.phar/bin/tunes-io";
+__HALT_COMPILER();
+STUB;
+
+$dir = realpath(__DIR__ . '/..');
+
+$phar = new Phar($pharPath);
+$phar->setStub($stub);
+$phar->addFile(__DIR__ . '/tunes-io', 'bin/tunes-io');
+$phar->buildFromIterator(new RecursiveIteratorIterator(new RecursiveDirectoryIterator("$dir/src")), $dir);
+$phar->buildFromIterator(new RecursiveIteratorIterator(new RecursiveDirectoryIterator("$dir/vendor")), $dir);

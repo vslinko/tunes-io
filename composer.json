@@ -1,0 +1,34 @@
+{
+    "name": "rithis/tunes-io",
+    "description": "tunes.io console player",
+    "keywords": ["tunes.io", "console", "player"],
+    "homepage": "https://github.com/rithis/tunes-io",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vyacheslav Slinko",
+            "email": "vyacheslav.slinko@rithis.com",
+            "role": "Founder"
+        }
+    ],
+    "support": {
+        "email": "support@rithis.com",
+        "issues": "https://github.com/rithis/tunes-io/issues",
+        "wiki": "https://github.com/rithis/tunes-io/wiki",
+        "source": "https://github.com/rithis/tunes-io"
+    },
+    "require": {
+        "nass600/get-id3": "@dev",
+
+        "react/stream": ">=0.2.5",
+        "react/http-client": ">=0.2.5",
+        "symfony/console": "2.1.*",
+        "rithis/php-player": "@dev",
+        "rithis/xspf": "@dev"
+    },
+    "autoload": {
+        "psr-0": {
+            "Rithis": "src"
+        }
+    }
+}

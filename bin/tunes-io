@@ -1,0 +1,12 @@
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$input = new Symfony\Component\Console\Input\ArgvInput();
+if (!$input->getFirstArgument()) {
+    $input = new Symfony\Component\Console\Input\ArgvInput(['tunes-io', 'play']);
+}
+
+$app = new Symfony\Component\Console\Application('tunes-io', '0.0.1-dev');
+$app->add(new Rithis\TunesIO\Command\PlayCommand());
+$app->run($input);
