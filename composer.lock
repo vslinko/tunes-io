@@ -517,15 +517,15 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rithis/xspf",
-                "reference": "4692842cb590946f2e6fc662c3dc8ce9bd8ec1ed"
+                "reference": "334daa7a28abc48149a5a88e3387c0b9f8f2cc4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/rithis/xspf/archive/4692842cb590946f2e6fc662c3dc8ce9bd8ec1ed.zip",
-                "reference": "4692842cb590946f2e6fc662c3dc8ce9bd8ec1ed",
+                "url": "https://github.com/rithis/xspf/archive/334daa7a28abc48149a5a88e3387c0b9f8f2cc4b.zip",
+                "reference": "334daa7a28abc48149a5a88e3387c0b9f8f2cc4b",
                 "shasum": ""
             },
-            "time": "2012-11-26 16:15:16",
+            "time": "2012-11-26 20:09:17",
             "type": "library",
             "installation-source": "source",
             "autoload": {

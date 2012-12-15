@@ -36,6 +36,6 @@ class DownloadTask
 
     public function openDestinationStream()
     {
-        return $this->library->open($this->track);
+        return $this->library->openTrack($this->track);
     }
 }

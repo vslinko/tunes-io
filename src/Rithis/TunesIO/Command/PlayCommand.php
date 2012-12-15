@@ -23,6 +23,8 @@ use Rithis\TunesIO\DownloadProcess,
     Rithis\XSPF\Track;
 
 use DateTime;
+use React\EventLoop\StreamSelectLoop;
+use React\EventLoop\LibEvLoop;
 
 class PlayCommand extends Command
 {
@@ -37,7 +39,7 @@ class PlayCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // processors
-        $loop = EventLoopFactory::create();
+        $loop = new LibEvLoop();
         $httpClient = (new HttpClientFactory())->create($loop, (new DnsResolverFactory())->createCached('8.8.8.8', $loop));
 
         $playerStream = new SoXPlayerStream($loop);
@@ -54,7 +56,7 @@ class PlayCommand extends Command
         };
 
         $playNext = function () use ($library, $play) {
-            $play($library->next());
+            $play($library->nextTrack());
         };
 
         $quit = function () use ($playerStream, $download, $library, $loop) {
@@ -62,7 +64,7 @@ class PlayCommand extends Command
 
             /** @var $task \Rithis\TunesIO\DownloadTask */
             foreach ($download->getCurrentTasks() as $task) {
-                $library->remove($task->getTrack());
+                $library->removeTrack($task->getTrack());
             }
 
             $loop->stop();
@@ -75,7 +77,7 @@ class PlayCommand extends Command
         $controlStream->any(['q', 'quit', 'exit'], $quit);
 
         $parse->on('track', function (Track $track) use ($library, $download) {
-            if (!$library->has($track)) {
+            if (!$library->hasTrack($track)) {
                 $download->add(new DownloadTask($track, $library));
             }
         });
@@ -90,15 +92,15 @@ class PlayCommand extends Command
             $title = $track->getTitle();
             $output->writeln("Downloading <info>$creator - $title</info>");
         });
-        $download->on('track', [$library, 'add']);
-        $download->on('error', [$library, 'remove']);
+        $download->on('track', [$library, 'addTrack']);
+        $download->on('error', [$library, 'removeTrack']);
 
         // initialization
-        declare(ticks = 1);
-        pcntl_signal(SIGINT, function () use ($output, $quit) {
-            $output->write("\n");
-            $quit();
-        });
+        //declare(ticks = 1);
+//        pcntl_signal(SIGINT, function () use ($output, $quit) {
+//            $output->write("\n");
+//            $quit();
+//        });
 
         if (count($library) > 0) {
             $playNext();
@@ -106,10 +108,10 @@ class PlayCommand extends Command
             $download->once('track', $playNext);
         }
 
-        (new Stream(fopen('php://stdin', 'r'), $loop))->pipe($controlStream);
+        //(new Stream(fopen('php://stdin', 'r'), $loop))->pipe($controlStream);
 
-        $parse->run();
-        $download->run();
+        //$parse->run();
+        //$download->run();
         $loop->run();
     }
 }
